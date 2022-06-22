@@ -11,7 +11,7 @@ public class Message {
     private int id;
     private String body;
 
-    @OneToOne
+    @ManyToOne
     private Room room;
 
     @ManyToOne

@@ -1,44 +1,33 @@
 package ru.job4j.chat.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.model.Room;
-import ru.job4j.chat.repository.RoomRep;
-
-import java.util.ArrayList;
+import ru.job4j.chat.service.ServiceChat;
 import java.util.List;
 
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private final RoomRep rooms;
+    private final ServiceChat service;
 
-    public RoomController(RoomRep rooms) {
-        this.rooms = rooms;
+    public RoomController(ServiceChat service) {
+        this.service = service;
     }
 
     @GetMapping("/")
     public List<Room> findAll() {
-        List<Room> list = new ArrayList<>();
-        rooms.findAll().forEach(list::add);
-        return list;
+       return service.findAllRoom();
     }
 
     @PostMapping("/")
     public ResponseEntity<Room> create() {
-        return new ResponseEntity<>(
-                rooms.save(new Room()),
-                HttpStatus.CREATED
-        );
+        return service.createRoom();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        Room room = new Room();
-        room.setId(id);
-        rooms.delete(room);
-        return ResponseEntity.ok().build();
+       return service.deleteRoom(id);
     }
 }

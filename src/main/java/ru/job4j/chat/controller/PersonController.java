@@ -1,60 +1,43 @@
 package ru.job4j.chat.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.model.Person;
-import ru.job4j.chat.repository.PersonRep;
-
-import java.util.ArrayList;
+import ru.job4j.chat.service.ServiceChat;
 import java.util.List;
 
 @RestController
 @RequestMapping("/persons")
 public class PersonController {
 
-    private final PersonRep persons;
+    private final ServiceChat service;
 
-    public PersonController(final PersonRep persons) {
-        this.persons = persons;
+    public PersonController(final ServiceChat service) {
+        this.service = service;
     }
 
     @GetMapping("/")
     public List<Person> findAll() {
-        List<Person> list = new ArrayList<>();
-        persons.findAll().forEach(list::add);
-        return list;
+       return service.findAllPerson();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Person> findById(@PathVariable int id) {
-        var person = persons.findById(id);
-        return new ResponseEntity<>(
-                person.orElse(new Person()),
-                person.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
-        );
+      return service.findByIdPerson(id);
     }
 
     @PostMapping("/")
     public ResponseEntity<Person> create(@RequestBody Person person) {
-        return new ResponseEntity<>(
-                persons.save(person),
-                HttpStatus.CREATED
-        );
+        return service.createPerson(person);
     }
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
-        persons.save(person);
-        return ResponseEntity.ok().build();
+        return service.updatePerson(person);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        Person person = findById(id).getBody();
-        if (person != null) {
-            persons.delete(person);
-        }
-        return ResponseEntity.ok().build();
+       return service.deletePerson(id);
     }
 }
