@@ -13,6 +13,7 @@ import ru.job4j.chat.service.ServiceChat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/roles")
@@ -31,6 +32,10 @@ public class RoleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Role> findById(@PathVariable int id) {
-        return service.findByIdRole(id);
+        Optional<Role> role = service.findByIdRole(id);
+        return new ResponseEntity<>(
+                role.orElse(new Role()),
+                role.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 }

@@ -1,5 +1,6 @@
 package ru.job4j.chat.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.model.Room;
@@ -23,11 +24,15 @@ public class RoomController {
 
     @PostMapping("/")
     public ResponseEntity<Room> create() {
-        return service.createRoom();
+        return new ResponseEntity<>(
+               service.createRoom(),
+                HttpStatus.CREATED
+        );
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-       return service.deleteRoom(id);
+       service.deleteRoom(id);
+       return ResponseEntity.ok().build();
     }
 }

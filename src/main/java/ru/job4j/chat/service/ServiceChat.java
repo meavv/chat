@@ -1,13 +1,10 @@
 package ru.job4j.chat.service;
 
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.job4j.chat.model.Message;
 import ru.job4j.chat.model.Person;
 import ru.job4j.chat.model.Role;
@@ -19,6 +16,7 @@ import ru.job4j.chat.repository.RoomRep;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceChat {
@@ -41,11 +39,8 @@ public class ServiceChat {
         return list;
     }
 
-    public ResponseEntity<Message> createMessage(Message message) {
-        return new ResponseEntity<>(
-                messages.save(message),
-                HttpStatus.CREATED
-        );
+    public Message createMessage(Message message) {
+        return messages.save(message);
     }
 
     public List<Person> findAllPerson() {
@@ -54,33 +49,21 @@ public class ServiceChat {
         return list;
     }
 
-    public ResponseEntity<Person> findByIdPerson(int id) {
-        var person = persons.findById(id);
-        return new ResponseEntity<>(
-                person.orElse(new Person()),
-                person.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
-        );
+    public Optional<Person> findByIdPerson(int id) {
+        return persons.findById(id);
     }
 
-    public ResponseEntity<Person> createPerson(Person person) {
-        return new ResponseEntity<>(
-                persons.save(person),
-                HttpStatus.CREATED
-        );
+    public Person createPerson(Person person) {
+       return persons.save(person);
     }
 
-    public ResponseEntity<Void> updatePerson(Person person) {
-        persons.save(person);
-        return ResponseEntity.ok().build();
+    public Person updatePerson(Person person) {
+        return persons.save(person);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerson(int id) {
-        Person person = findByIdPerson(id).getBody();
-        if (person != null) {
-            persons.delete(person);
-        }
-        return ResponseEntity.ok().build();
+
+    public void deletePerson(int id) {
+        findByIdPerson(id).ifPresent(persons::delete);
     }
 
     public List<Role> findAllRole() {
@@ -89,12 +72,8 @@ public class ServiceChat {
         return list;
     }
 
-    public ResponseEntity<Role> findByIdRole(int id) {
-        var role = roles.findById(id);
-        return new ResponseEntity<>(
-                role.orElse(new Role()),
-                role.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
-        );
+    public Optional<Role> findByIdRole(int id) {
+        return roles.findById(id);
     }
 
     public List<Room> findAllRoom() {
@@ -103,17 +82,13 @@ public class ServiceChat {
         return list;
     }
 
-    public ResponseEntity<Room> createRoom() {
-        return new ResponseEntity<>(
-                rooms.save(new Room()),
-                HttpStatus.CREATED
-        );
+    public Room createRoom() {
+        return rooms.save(new Room());
     }
 
-    public ResponseEntity<Void> deleteRoom(int id) {
+    public void deleteRoom(int id) {
         Room room = new Room();
         room.setId(id);
         rooms.delete(room);
-        return ResponseEntity.ok().build();
     }
 }

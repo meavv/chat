@@ -1,10 +1,12 @@
 package ru.job4j.chat.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.model.Person;
 import ru.job4j.chat.service.ServiceChat;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
@@ -23,21 +25,30 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Person> findById(@PathVariable int id) {
-      return service.findByIdPerson(id);
+        Optional<Person> person = service.findByIdPerson(id);
+        return new ResponseEntity<>(
+                person.orElse(new Person()),
+                person.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 
     @PostMapping("/")
     public ResponseEntity<Person> create(@RequestBody Person person) {
-        return service.createPerson(person);
+        return new ResponseEntity<>(
+                service.createPerson(person),
+                HttpStatus.CREATED
+        );
     }
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
-        return service.updatePerson(person);
+        service.updatePerson(person);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-       return service.deletePerson(id);
+        service.deletePerson(id);
+        return ResponseEntity.ok().build();
     }
 }

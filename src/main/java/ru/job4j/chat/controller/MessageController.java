@@ -1,5 +1,6 @@
 package ru.job4j.chat.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.chat.model.Message;
@@ -23,7 +24,10 @@ public class MessageController {
 
     @PostMapping("/")
     public ResponseEntity<Message> create(@RequestBody Message message) {
-        return service.createMessage(message);
+        return new ResponseEntity<>(
+                service.createMessage(message),
+                HttpStatus.CREATED
+        );
     }
 
 }
