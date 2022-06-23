@@ -61,7 +61,6 @@ public class ServiceChat {
         return persons.save(person);
     }
 
-
     public void deletePerson(int id) {
         findByIdPerson(id).ifPresent(persons::delete);
     }
