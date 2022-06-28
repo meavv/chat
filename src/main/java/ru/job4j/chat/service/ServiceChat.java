@@ -53,6 +53,10 @@ public class ServiceChat {
         return persons.findById(id);
     }
 
+    public Person findByNamePerson(String name) {
+        return persons.findByUsername(name);
+    }
+
     public Person createPerson(Person person) {
        return persons.save(person);
     }
