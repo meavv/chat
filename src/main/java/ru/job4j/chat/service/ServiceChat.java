@@ -94,4 +94,12 @@ public class ServiceChat {
         room.setId(id);
         rooms.delete(room);
     }
+
+    public Optional<Message> findByIdMessage(int id) {
+        return messages.findById(id);
+    }
+
+    public Optional<Room> findByIdRoom(int id) {
+        return rooms.findById(id);
+    }
 }
