@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.model.Role;
 import ru.job4j.chat.service.ServiceChat;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -24,8 +24,11 @@ public class RoleController {
     }
 
     @GetMapping("/")
-    public List<Role> findAll() {
-        return service.findAllRole();
+    public ResponseEntity<ArrayList<Role>> findAll() {
+        var list = service.findAllRole();
+        return ResponseEntity.of(Optional.of(
+                new ArrayList<>(list)
+        ));
     }
 
     @GetMapping("/{id}")
