@@ -1,6 +1,10 @@
 package ru.job4j.chat.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -9,7 +13,11 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotBlank
     private String username;
+
+    @NotNull
     private String password;
 
     @ManyToOne

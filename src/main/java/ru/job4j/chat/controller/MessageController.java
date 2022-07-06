@@ -7,6 +7,8 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.model.Message;
 import ru.job4j.chat.model.Person;
 import ru.job4j.chat.service.ServiceChat;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +28,7 @@ public class MessageController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Message> create(@RequestBody Message message) {
+    public ResponseEntity<Message> create(@Valid @RequestBody Message message) {
         if (message.getPerson() == null || message.getRoom() == null
                                                 || message.getBody() == null) {
             throw new NullPointerException("cannot be null");

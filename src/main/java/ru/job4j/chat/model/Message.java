@@ -1,6 +1,8 @@
 package ru.job4j.chat.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -9,11 +11,15 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotBlank
     private String body;
 
+    @NotNull
     @ManyToOne
     private Room room;
 
+    @NotNull
     @ManyToOne
     private Person person;
 

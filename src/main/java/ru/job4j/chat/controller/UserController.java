@@ -52,6 +52,7 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Person> signUp(@RequestBody Person person) {
+        System.out.println(person);
         if (person.getRole() == null) {
             throw new NullPointerException("Role cannot be null");
         }

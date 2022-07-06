@@ -4,9 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.job4j.chat.model.Message;
 import ru.job4j.chat.model.Room;
 import ru.job4j.chat.service.ServiceChat;
+
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
